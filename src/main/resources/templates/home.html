@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>My Tasks</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            height: 100vh;
+            background-image: url('https://i.imgur.com/zJ4iCUp.jpeg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .profile-button {
+            padding: 8px 14px;
+            font-size: 14px;
+            color: #fff;
+            background-color: #456990;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .profile-button:hover {
+            background-color: #334d66;
+            transform: scale(1.02);
+        }
+
+        h1 {
+            margin-top: 40px;
+            font-size: 36px;
+            color: #444;
+        }
+
+        .header-container {
+            margin: 20px auto;
+            padding: 10px 5%;
+            width: 90%;
+            max-width: 900px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h2 {
+            font-size: 28px;
+            color: #333;
+            margin: 0;
+        }
+
+        form {
+            display: flex;
+            align-items: center;
+        }
+
+        form input[type="text"] {
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #bbb;
+            border-radius: 4px;
+            background-color: #fff9f0;
+            width: 200px;
+            margin-right: 10px;
+        }
+
+        form select {
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #bbb;
+            border-radius: 4px;
+            background-color: #fff9f0;
+            width: 100px;
+            margin-right: 5px;
+        }
+
+        form button {
+            padding: 8px 12px;
+            font-size: 14px;
+            color: #fff;
+            background-color: #5a9367;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #486d4d;
+        }
+
+        .add-task-btn {
+            padding: 8px 14px;
+            font-size: 14px;
+            color: #fff;
+            background-color: #456990;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .add-task-btn:hover {
+            background-color: #334d66;
+            transform: scale(1.02);
+        }
+
+        .logout-button {
+            padding: 8px 14px;
+            font-size: 14px;
+            color: #fff;
+            background-color: #a82626;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .logout-button:hover {
+            background-color: #d80e0e;
+            transform: scale(1.02);
+        }
+
+        table {
+            margin: 30px auto;
+            width: 90%;
+            max-width: 900px;
+            border-collapse: collapse;
+            background: #ffffff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background-color: #ffffff;
+            font-size: 16px;
+            color: #333;
+        }
+
+        td {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .task-title {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .task-title:hover {
+            text-decoration: underline;
+        }
+
+        .edit-button {
+            padding: 6px 10px;
+            font-size: 14px;
+            color: #ffffff;
+            background-color: #456990;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .edit-button:hover {
+            background-color: #58778f;
+        }
+
+        .about-button {
+            padding: 6px 10px;
+            font-size: 14px;
+            color: #ffffff;
+            background-color: #456990;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .about-button:hover {
+            background-color: #58778f;
+        }
+
+        .delete-button {
+            padding: 6px 10px;
+            font-size: 14px;
+            color: #fff;
+            background-color: #b85042;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .delete-button:hover {
+            background-color: #8a3c32;
+        }
+    </style>
+</head>
+<body>
+<div class="header-container">
+    <a href="/task/new" class="add-task-btn" aria-label="Create New Task">+ New Task</a>
+    <form th:action="@{/search}" method="get">
+        <label>
+            <select name="categoryId">
+                <option value="">All</option>
+                <option th:each="category : ${categories}"
+                        th:value="${category.id}"
+                        th:text="${category.name}"></option>
+            </select>
+        </label>
+        <label>
+            <input type="text" name="query" placeholder="Search tasks">
+        </label>
+        <button type="submit">Search</button>
+    </form>
+    <a href="/profile" class="profile-button" aria-label="About Me">Profile</a>
+    <a href="/logout" class="logout-button" aria-label="Logout">
+        <i class="fas fa-sign-out-alt"></i> Logout
+    </a>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Description</th>
+        <th>More</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${#lists.isEmpty(tasks)}">
+        <td colspan="4">No tasks available</td>
+    </tr>
+    <tr th:each="task : ${tasks}">
+        <td>
+            <a class="task-title" th:text="${task.title}"></a>
+        </td>
+        <td th:text="${task.category.name}"></td>
+        <td th:text="${task.description}"></td>
+        <td>
+            <a th:href="@{/task/{id}(id=${task.id})}" class="about-button" aria-label="Task Details">About</a>
+            <a th:href="@{/task/edit/{id}(id=${task.id})}" class="edit-button" aria-label="Edit Task">Edit</a>
+            <a th:href="@{/task/delete/{id}(id=${task.id})}" class="delete-button" aria-label="Delete Task">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

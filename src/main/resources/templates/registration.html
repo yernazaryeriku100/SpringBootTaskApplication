@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #f5f5dc;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('https://i.imgur.com/zJ4iCUp.jpeg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            background-color: #ffffff;
+            border: 1px solid #d3d3d3;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            font-family: 'Times New Roman', serif;
+            font-size: 28px;
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 16px;
+            color: #555;
+            width: 100%;
+            height: 40px;
+            text-align: center;
+            border: 1px solid transparent;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #999;
+            border-radius: 6px;
+            background-color: #fafafa;
+        }
+
+        input:focus {
+            border-color: #555;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            max-width: 400px;
+            padding: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background-color: #6c757d;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #5a6268;
+        }
+
+        p {
+            font-size: 14px;
+            color: #555;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Registration</h1>
+    <form action="#" th:action="@{/register}" method="post">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" placeholder="Enter your username" required />
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" placeholder="Enter your email" required />
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" placeholder="Enter your password" required />
+        </div>
+        <button type="submit">Sign up</button>
+    </form>
+    <p><a href="/login">Login</a></p>
+</div>
+</body>
+</html>

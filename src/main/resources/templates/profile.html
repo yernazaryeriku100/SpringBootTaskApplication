@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <style>
+        body {
+            font-family: 'Tahoma', sans-serif;
+            background-image: url('https://i.imgur.com/zJ4iCUp.jpeg');
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 350px;
+            width: 90%;
+            background: #FFFFFF;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            border: 2px solid #A7C6ED;
+        }
+
+        h1 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #3A6CA0;
+        }
+
+        .profile-info {
+            margin-top: 20px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .profile-info p {
+            margin: 10px 0;
+        }
+
+        .button-list {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .button-list li {
+            margin-bottom: 10px;
+        }
+
+        .button-list a {
+            display: block;
+            padding: 10px 15px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #ffffff;
+            background-color: #456990;
+            border-radius: 5px;
+            border: 1px solid #456990;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            text-decoration: none;
+        }
+
+        .button-list a:hover {
+            background-color: #A7C6ED;
+            color: #FFFFFF;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>About me</h1>
+    <div class="profile-info">
+        <p><strong>Username:</strong> <span th:text="${user.username}">palenshe</span></p>
+        <p><strong>Email:</strong> <span th:text="${user.email}">palenshe@example.com</span></p>
+        <p><strong>Created at:</strong> <span th:text="${formattedCreatedAt}"></span></p>
+    </div>
+    <ul class="button-list">
+        <li><a href="/home" class="home-button"><i class="fas fa-home"></i> Home</a></li>
+    </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #f5f5dc;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('https://i.imgur.com/zJ4iCUp.jpeg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 30px;
+            background-color: #fff;
+            border: 1px solid #d3d3d3;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Times New Roman', serif;
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            display: block;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input {
+            width: 90%;
+            max-width: 300px;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            border: 1px solid #999;
+            border-radius: 4px;
+            background-color: #fafafa;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #555;
+        }
+
+        button {
+            width: 90%;
+            max-width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background-color: #6c757d;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #5a6268;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 14px;
+            color: #555;
+            margin-top: 20px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Login</h1>
+    <form action="/login" method="post">
+        <div>
+            <label for="email">Email</label>
+            <input type="text" id="email" name="username" placeholder="Enter your email" required>
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        </div>
+        <button type="submit">Sign in</button>
+    </form>
+    <div class="error">
+        <p th:if="${param.error}" th:text="'Invalid email or password.'"></p>
+    </div>
+    <p><a href="/register">Register</a></p>
+</div>
+</body>
+</html>

@@ -231,7 +231,7 @@ public class MainController {
         User user = userService.findByEmail(email);
         if (user == null || !userService.isResetCodeValid(user, code)) {
             model.addAttribute("error", "Invalid code or email.");
-            return "changePasswordPage";
+            return "change_password";
         }
         userService.updatePassword(user, newPassword);
         return "redirect:/login";
@@ -251,7 +251,7 @@ public class MainController {
         userService.savePasswordResetCode(user, code);
         model.addAttribute("email", user.getEmail());
         model.addAttribute("message", "Verification code sent to your email.");
-        return "changePasswordPage";
+        return "change_password";
     }
 
     @GetMapping("/user/changePassword")
@@ -264,6 +264,6 @@ public class MainController {
             return "redirect:/login";
         }
         model.addAttribute("email", user.getEmail());
-        return "changePasswordPage";
+        return "change_password";
     }
 }

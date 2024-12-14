@@ -3,6 +3,7 @@ package com.example.springboottaskapplication.implementation;
 import com.example.springboottaskapplication.entity.User;
 import com.example.springboottaskapplication.repository.UserRepo;
 import com.example.springboottaskapplication.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +14,12 @@ import java.util.Optional;
 public class UserImpl implements UserService {
 
     private final UserRepo userRepo;
-    public UserImpl(UserRepo userRepo, PasswordEncoder passwordEncoder) {
+    public UserImpl(UserRepo userRepo) {
         this.userRepo = userRepo;
-        this.passwordEncoder = passwordEncoder;
     }
 
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<User> findAllUsers() {
@@ -49,6 +50,21 @@ public class UserImpl implements UserService {
     @Override
     public void deleteUserById(Long userId) {
         userRepo.deleteById(userId);
+    }
+
+    public void savePasswordResetCode(User user, String code) {
+        user.setResetCode(code);
+        userRepo.save(user);
+    }
+
+    public boolean isResetCodeValid(User user, String code) {
+        return user.getResetCode() != null && user.getResetCode().equals(code);
+    }
+
+    public void updatePassword(User user, String newPassword) {
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setResetCode(null);
+        userRepo.save(user);
     }
 }
 

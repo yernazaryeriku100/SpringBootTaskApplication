@@ -1,7 +1,6 @@
 package com.example.springboottaskapplication.entity;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,6 +20,8 @@ public class User {
     private String email;
 
     private String photo;
+
+    private String resetCode;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -82,6 +83,14 @@ public class User {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public String getResetCode() {
+        return resetCode;
+    }
+
+    public void setResetCode(String resetCode) {
+        this.resetCode = resetCode;
     }
 }
 

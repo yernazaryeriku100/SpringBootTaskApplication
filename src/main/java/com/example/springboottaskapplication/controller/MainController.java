@@ -7,6 +7,7 @@ import com.example.springboottaskapplication.repository.UserRepo;
 import com.example.springboottaskapplication.implementation.CategoryImpl;
 import com.example.springboottaskapplication.implementation.TaskImpl;
 import com.example.springboottaskapplication.implementation.UserImpl;
+import com.example.springboottaskapplication.service.EmailService;
 import com.example.springboottaskapplication.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,15 +35,17 @@ public class MainController {
     private final TaskImpl taskService;
     private final CategoryImpl categoryService;
     private final ImageService imageService;
+    private final EmailService emailService;
 
     @Autowired
     public MainController(UserImpl userService, UserRepo userRepo, TaskImpl taskService,
-                          CategoryImpl categoryService, ImageService imageService) {
+                          CategoryImpl categoryService, ImageService imageService, EmailService emailService) {
         this.userRepo = userRepo;
         this.userService = userService;
         this.taskService = taskService;
         this.categoryService = categoryService;
         this.imageService = imageService;
+        this.emailService=emailService;
     }
 
     @GetMapping("/home")
@@ -218,5 +221,49 @@ public class MainController {
             model.addAttribute("error", "Failed to upload photo");
             return "errorPage";
         }
+    }
+
+    @PostMapping("/user/changePassword")
+    public String changePassword(@RequestParam("email") String email,
+                                 @RequestParam("code") String code,
+                                 @RequestParam("newPassword") String newPassword,
+                                 Model model) {
+        User user = userService.findByEmail(email);
+        if (user == null || !userService.isResetCodeValid(user, code)) {
+            model.addAttribute("error", "Invalid code or email.");
+            return "changePasswordPage";
+        }
+        userService.updatePassword(user, newPassword);
+        return "redirect:/login";
+    }
+
+    @PostMapping("/user/sendCode")
+    public String sendPasswordResetCode(@AuthenticationPrincipal UserDetails currentUser, Model model) {
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+        User user = userService.findByUsername(currentUser.getUsername());
+        if (user == null) {
+            return "redirect:/login";
+        }
+        String code = String.valueOf((int) (Math.random() * 1000000));
+        emailService.sendEmail(user.getEmail(), "Password Reset Code", "Your password reset code is: " + code);
+        userService.savePasswordResetCode(user, code);
+        model.addAttribute("email", user.getEmail());
+        model.addAttribute("message", "Verification code sent to your email.");
+        return "changePasswordPage";
+    }
+
+    @GetMapping("/user/changePassword")
+    public String changePasswordPage(@AuthenticationPrincipal UserDetails currentUser, Model model) {
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+        User user = userService.findByUsername(currentUser.getUsername());
+        if (user == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("email", user.getEmail());
+        return "changePasswordPage";
     }
 }
